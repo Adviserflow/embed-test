@@ -5,18 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Botdash Embed Test (GitHub Pages)</title>
     <style>
-      /* Optional visual anchor if you want an inline mount instead of a floating bubble */
-      #botdash-root {
-        min-height: 480px;
-        border: 1px dashed #bbb;
-        margin: 24px 0;
-      }
+      #botdash-root { min-height: 480px; border: 1px dashed #bbb; margin: 24px 0; }
     </style>
   </head>
   <body>
     <h1>Botdash embed.js test (GitHub Pages)</h1>
 
-    <!-- Inline container is optional; remove aa-container if you want the floating widget -->
     <div id="botdash-root"></div>
 
     <script
@@ -30,52 +24,5 @@
       async
       defer
     ></script>
-
-    <!-- Fallback bootstrap: if the bundle doesn’t auto-init, this will try the common globals -->
-    <script>
-      (function () {
-        function init() {
-          var s = document.querySelector('script[src*="embed.js"][data-aa-bot]');
-          if (!s) {
-            console.warn("[botdash] embed bootstrap: script tag not found");
-            return;
-          }
-          var cfg = {
-            bot: s.dataset.aaBot,
-            tenant: s.dataset.aaTenant,
-            api: s.dataset.aaApi,
-            publicKey: s.dataset.aaPublicKey,
-            previewToken: s.dataset.aaPreviewToken,
-            container: s.dataset.aaContainer || null
-          };
-          // Basic validation
-          var missing = Object.entries({ bot: cfg.bot, tenant: cfg.tenant, api: cfg.api, publicKey: cfg.publicKey })
-            .filter(function (e) { return !e[1]; })
-            .map(function (e) { return e[0]; });
-          if (missing.length) {
-            console.warn("[botdash] missing required config:", missing.join(", "));
-            return;
-          }
-          // Try the common global init shapes
-          if (window.botdash && typeof window.botdash.init === "function") {
-            console.info("[botdash] init via window.botdash.init");
-            window.botdash.init(cfg);
-          } else if (window.botdashWidget && typeof window.botdashWidget.mount === "function") {
-            console.info("[botdash] init via window.botdashWidget.mount");
-            window.botdashWidget.mount(cfg);
-          } else if (typeof window.initBotdash === "function") {
-            console.info("[botdash] init via window.initBotdash");
-            window.initBotdash(cfg);
-          } else {
-            console.warn("[botdash] embed loaded but no global init function found");
-          }
-        }
-        if (document.readyState === "complete" || document.readyState === "interactive") {
-          setTimeout(init, 0);
-        } else {
-          document.addEventListener("DOMContentLoaded", init);
-        }
-      })();
-    </script>
   </body>
 </html>
